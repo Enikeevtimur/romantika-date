@@ -1,6 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600&display=swap');
-@import "tailwindcss";
-
 :root { --rose:#9f3d55; --deep:#572635; --ink:#352729; --blush:#ead0cc; --paper:#fffaf4; --cream:#f6eee6; --line:rgba(111,65,72,.18); }
 * { box-sizing:border-box; }
 html,body { margin:0; min-height:100%; }
