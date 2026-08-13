@@ -2,113 +2,97 @@
 
 import { useState } from "react";
 
-const steps = [
+const pages = [
   {
-    eyebrow: "У меня к тебе кое-что важное",
-    title: <>Можно украсть<br />твой вечер?</>,
-    text: "Я придумал маленький план. Он начинается прямо здесь — и становится лучше с каждым шагом.",
-    button: "Мне уже интересно",
+    label: "Личное послание",
+    title: <>Валентина,<br /><i>это для тебя</i></>,
+    text: "Есть вечера, которые хочется запомнить. И есть человек, с которым хочется их разделить.",
+    action: "Открыть приглашение",
+    note: "от Тимура — с нежностью",
   },
   {
-    eyebrow: "Шаг 2 · правильное настроение",
-    title: <>Немного города.<br /><em>Много нас.</em></>,
-    text: "Без спешки, без сложных планов. Красивый маршрут, любимая музыка и время, которое никуда не торопится.",
-    button: "А что дальше?",
+    label: "Немного о вечере",
+    title: <>Только ты,<br />я и <i>романтика</i></>,
+    text: "Я хочу провести этот вечер рядом с тобой — красиво одеться, забыть обо всём и никуда не спешить.",
+    action: "Узнать, куда мы идём",
+    note: "один вечер · только для нас",
   },
   {
-    eyebrow: "Шаг 3 · план на двоих",
-    title: <>Один вечер,<br /><em>три обещания.</em></>,
-    text: "",
-    button: "Задать главный вопрос",
+    label: "Место встречи",
+    title: <>Ресторан<br /><i>«Романтика»</i></>,
+    text: "Уютный столик, мягкий свет и долгий разговор. Остальное пусть останется маленьким сюрпризом.",
+    action: "Перейти к главному",
+    note: "столик на двоих",
   },
-];
-
-const promises = [
-  ["01", "Вкусно", "Место, где можно долго разговаривать"],
-  ["02", "Красиво", "Маршрут с лучшим светом на закате"],
-  ["03", "Вместе", "Телефоны в сторону, весь вечер — наш"],
 ];
 
 export default function Home() {
   const [step, setStep] = useState(0);
   const [accepted, setAccepted] = useState(false);
-
-  const next = () => setStep((value) => Math.min(value + 1, 3));
-  const restart = () => { setAccepted(false); setStep(0); };
+  const reset = () => { setStep(0); setAccepted(false); };
 
   return (
-    <main className="page-shell">
-      <div className="ambient ambient-one" />
-      <div className="ambient ambient-two" />
+    <main className="invitation">
+      <div className="glow glowTop" /><div className="glow glowBottom" />
+      <div className="petals petalsLeft" aria-hidden="true"><b>❦</b><b>❧</b><b>❦</b></div>
+      <div className="petals petalsRight" aria-hidden="true"><b>❧</b><b>❦</b><b>❧</b></div>
 
-      <header className="topbar">
-        <button className="monogram" onClick={restart} aria-label="Начать сначала">A <span>♥</span> Т</button>
-        <div className="step-count"><span>0{step + 1}</span><i />04</div>
+      <header>
+        <button className="names" onClick={reset} aria-label="Начать приглашение сначала">Тимур <span>♡</span> Валентина</button>
+        <div className="counter"><strong>0{step + 1}</strong><span />04</div>
       </header>
 
-      <section className="stage" aria-live="polite">
+      <section className="scene" aria-live="polite">
         {step < 3 ? (
-          <article className="card" key={step}>
-            <div className="copy">
-              <p className="eyebrow"><span />{steps[step].eyebrow}</p>
-              <h1>{steps[step].title}</h1>
-              {steps[step].text && <p className="lead">{steps[step].text}</p>}
-
-              {step === 2 && (
-                <div className="promise-list">
-                  {promises.map(([number, name, description]) => (
-                    <div className="promise" key={number}>
-                      <span>{number}</span><strong>{name}</strong><p>{description}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <button className="primary" onClick={next}>{steps[step].button}<span>→</span></button>
+          <article className="chapter" key={step}>
+            <div className="letterCopy">
+              <p className="kicker">{pages[step].label}</p>
+              <h1>{pages[step].title}</h1>
+              <p className="intro">{pages[step].text}</p>
+              <button className="cta" onClick={() => setStep(step + 1)}>{pages[step].action}<span>→</span></button>
             </div>
 
-            <div className={`visual visual-${step + 1}`} aria-hidden="true">
-              <div className="orbit orbit-a" /><div className="orbit orbit-b" />
-              <div className="date-card">
-                <span className="tiny">только ты + я</span>
-                <div className="heart">♥</div>
-                <p>{step === 0 ? "есть один план" : step === 1 ? "вечер вне времени" : "идеальное свидание"}</p>
-                <div className="signature">для тебя</div>
+            <div className="keepsake" aria-hidden="true">
+              <div className="halo haloOuter" /><div className="halo haloInner" />
+              <div className="envelope">
+                <div className="paper">
+                  <span className="paperTop">приглашение</span>
+                  <span className="ornament">✦</span>
+                  <strong>{step === 0 ? "для\nВалентины" : step === 1 ? "наш\nвечер" : "Романтика"}</strong>
+                  <small>{pages[step].note}</small>
+                </div>
+                <div className="seal">Т<span>♥</span>В</div>
               </div>
-              <span className="spark spark-a">✦</span><span className="spark spark-b">✦</span>
+              <span className="star one">✦</span><span className="star two">✧</span><span className="star three">✦</span>
             </div>
           </article>
         ) : (
-          <article className="final-card" key="final">
-            {!accepted ? (
-              <>
-                <p className="eyebrow centered"><span />Финальный шаг<span /></p>
-                <div className="final-heart" aria-hidden="true">♥</div>
-                <h1>Пойдёшь со мной<br /><em>на свидание?</em></h1>
-                <p className="lead">Дату и место я беру на себя.<br />От тебя нужно только одно маленькое «да».</p>
-                <div className="actions">
-                  <button className="primary yes" onClick={() => setAccepted(true)}>Да, конечно <span>♥</span></button>
-                  <button className="secondary" onClick={() => setAccepted(true)}>Да, но загадочно</button>
-                </div>
-              </>
-            ) : (
-              <div className="accepted">
-                <div className="confetti" aria-hidden="true">✦　♥　✦</div>
-                <p className="eyebrow centered"><span />Это официально<span /></p>
-                <h1>У нас<br /><em>свидание.</em></h1>
-                <p className="lead">Я знал, что это будет хороший вечер.<br />Скоро пришлю все детали ♥</p>
-                <button className="secondary" onClick={restart}>Посмотреть ещё раз</button>
+          <article className="question" key="question">
+            {!accepted ? <>
+              <p className="kicker">Самый важный вопрос</p>
+              <div className="heartMark">♥</div>
+              <h1>Валентина,<br /><i>пойдёшь со мной?</i></h1>
+              <p className="intro">На свидание в ресторан «Романтика». Я очень хочу провести этот вечер именно с тобой.</p>
+              <p className="from">твой Тимур</p>
+              <div className="buttons">
+                <button className="cta" onClick={() => setAccepted(true)}>Да, с радостью <span>♥</span></button>
+                <button className="quiet" onClick={() => setAccepted(true)}>Конечно, да</button>
               </div>
-            )}
+            </> : <div className="answer">
+              <div className="celebration">✦　♥　✦</div>
+              <p className="kicker">Значит, решено</p>
+              <h1>До встречи<br /><i>в «Романтике»</i></h1>
+              <p className="intro">Этот вечер уже стал особенным.<br />О деталях я позабочусь сам.</p>
+              <p className="from">с любовью, Тимур</p>
+              <button className="quiet" onClick={reset}>Прочитать ещё раз</button>
+            </div>}
           </article>
         )}
       </section>
 
       <footer>
-        <div className="progress" aria-label={`Шаг ${step + 1} из 4`}>
-          {[0, 1, 2, 3].map((item) => <span key={item} className={item <= step ? "active" : ""} />)}
-        </div>
-        <p>Сделано с любовью · специально для тебя</p>
+        <div className="progress">{[0,1,2,3].map(i => <i key={i} className={i <= step ? "on" : ""} />)}</div>
+        <p>история одного прекрасного вечера</p>
       </footer>
     </main>
   );
