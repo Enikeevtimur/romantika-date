@@ -2,28 +2,10 @@
 
 import { useState } from "react";
 
-const pages = [
-  {
-    label: "Личное послание",
-    title: <>Валентина,<br /><i>это для тебя</i></>,
-    text: "Есть вечера, которые хочется запомнить. И есть человек, с которым хочется их разделить.",
-    action: "Открыть приглашение",
-    note: "от Тимура — с нежностью",
-  },
-  {
-    label: "Немного о вечере",
-    title: <>Только ты,<br />я и <i>романтика</i></>,
-    text: "Я хочу провести этот вечер рядом с тобой — красиво одеться, забыть обо всём и никуда не спешить.",
-    action: "Узнать, куда мы идём",
-    note: "один вечер · только для нас",
-  },
-  {
-    label: "Место встречи",
-    title: <>Ресторан<br /><i>«Романтика»</i></>,
-    text: "Уютный столик, мягкий свет и долгий разговор. Остальное пусть останется маленьким сюрпризом.",
-    action: "Перейти к главному",
-    note: "столик на двоих",
-  },
+const chapters = [
+  { eyebrow: "Личное приглашение", number: "01", title: <>Валентина,<br /><em>открой коробочку</em></>, text: "Внутри — один красивый вечер, который я хочу разделить только с тобой.", button: "Открыть", card: "для тебя" },
+  { eyebrow: "Внутри коробочки", number: "02", title: <>Вечер со вкусом<br /><em>и без спешки</em></>, text: "Приглушённый свет, авторская кухня, бокал вина и разговор, который не хочется заканчивать.", button: "Узнать место", card: "вечер вдвоём" },
+  { eyebrow: "Место встречи", number: "03", title: <>Гастробар<br /><em>«Коробок»</em></>, text: "Тихий центр Новосибирска. Я забронирую для нас столик и обо всём позабочусь.", button: "К главному вопросу", card: "Чаплыгина, 28" },
 ];
 
 export default function Home() {
@@ -33,67 +15,43 @@ export default function Home() {
 
   return (
     <main className="invitation">
-      <div className="glow glowTop" /><div className="glow glowBottom" />
-      <div className="petals petalsLeft" aria-hidden="true"><b>❦</b><b>❧</b><b>❦</b></div>
-      <div className="petals petalsRight" aria-hidden="true"><b>❧</b><b>❦</b><b>❧</b></div>
-
-      <header>
-        <button className="names" onClick={reset} aria-label="Начать приглашение сначала">Тимур <span>♡</span> Валентина</button>
+      <div className="grain" aria-hidden="true" /><div className="brick brickLeft" aria-hidden="true" /><div className="brick brickRight" aria-hidden="true" />
+      <header className="topbar">
+        <button className="brand" onClick={reset} aria-label="Начать приглашение сначала"><span>КОРОБОК</span><i>на двоих</i></button>
+        <p className="names">Тимур <b>×</b> Валентина</p>
         <div className="counter"><strong>0{step + 1}</strong><span />04</div>
       </header>
-
-      <section className="scene" aria-live="polite">
+      <section className="stage" aria-live="polite">
         {step < 3 ? (
           <article className="chapter" key={step}>
-            <div className="letterCopy">
-              <p className="kicker">{pages[step].label}</p>
-              <h1>{pages[step].title}</h1>
-              <p className="intro">{pages[step].text}</p>
-              <button className="cta" onClick={() => setStep(step + 1)}>{pages[step].action}<span>→</span></button>
+            <div className="copy">
+              <p className="eyebrow">{chapters[step].eyebrow}</p><h1>{chapters[step].title}</h1>
+              <p className="description">{chapters[step].text}</p>
+              <button className="ovalButton" onClick={() => setStep(step + 1)}>{chapters[step].button}<span>↗</span></button>
             </div>
-
-            <div className="keepsake" aria-hidden="true">
-              <div className="halo haloOuter" /><div className="halo haloInner" />
-              <div className="envelope">
-                <div className="paper">
-                  <span className="paperTop">приглашение</span>
-                  <span className="ornament">✦</span>
-                  <strong>{step === 0 ? "для\nВалентины" : step === 1 ? "наш\nвечер" : "Романтика"}</strong>
-                  <small>{pages[step].note}</small>
-                </div>
-                <div className="seal">Т<span>♥</span>В</div>
-              </div>
-              <span className="star one">✦</span><span className="star two">✧</span><span className="star three">✦</span>
+            <div className="visual" aria-hidden="true">
+              <div className="orbit orbitOne" /><div className="orbit orbitTwo" />
+              <div className="box"><div className="boxLid"><span>КОРОБОК</span><i>гастробар</i></div><div className="boxCard"><small>{chapters[step].number} / 04</small><strong>{chapters[step].card}</strong><span>Тимур · Валентина</span></div></div>
+              <span className="scribble">впечатления внутри</span>
             </div>
           </article>
         ) : (
           <article className="question" key="question">
             {!accepted ? <>
-              <p className="kicker">Самый важный вопрос</p>
-              <div className="heartMark">♥</div>
-              <h1>Валентина,<br /><i>пойдёшь со мной?</i></h1>
-              <p className="intro">На свидание в ресторан «Романтика». Я очень хочу провести этот вечер именно с тобой.</p>
-              <p className="from">твой Тимур</p>
-              <div className="buttons">
-                <button className="cta" onClick={() => setAccepted(true)}>Да, с радостью <span>♥</span></button>
-                <button className="quiet" onClick={() => setAccepted(true)}>Конечно, да</button>
-              </div>
-            </> : <div className="answer">
-              <div className="celebration">✦　♥　✦</div>
-              <p className="kicker">Значит, решено</p>
-              <h1>До встречи<br /><i>в «Романтике»</i></h1>
-              <p className="intro">Этот вечер уже стал особенным.<br />О деталях я позабочусь сам.</p>
-              <p className="from">с любовью, Тимур</p>
-              <button className="quiet" onClick={reset}>Прочитать ещё раз</button>
+              <p className="eyebrow">Главное внутри</p><span className="tinyHeart">♥</span>
+              <h1>Валентина,<br /><em>пойдёшь со мной?</em></h1>
+              <p className="description">На свидание в гастробар «Коробок».<br />Только ты, я и наш особенный вечер.</p><p className="signature">Твой Тимур</p>
+              <div className="answers"><button className="ovalButton" onClick={() => setAccepted(true)}>Да, с радостью <span>♥</span></button><button className="textButton" onClick={() => setAccepted(true)}>Конечно, да</button></div>
+            </> : <div className="accepted">
+              <p className="eyebrow">Коробочка открыта</p><div className="cheers">◇　♥　◇</div>
+              <h1>До встречи<br /><em>в «Коробке»</em></h1>
+              <p className="description">Чаплыгина, 28 · столик на двоих<br />О времени я расскажу тебе лично.</p><p className="signature">С любовью, Тимур</p>
+              <button className="textButton" onClick={reset}>Открыть ещё раз</button>
             </div>}
           </article>
         )}
       </section>
-
-      <footer>
-        <div className="progress">{[0,1,2,3].map(i => <i key={i} className={i <= step ? "on" : ""} />)}</div>
-        <p>история одного прекрасного вечера</p>
-      </footer>
+      <footer><div className="progress">{[0,1,2,3].map(item => <i key={item} className={item <= step ? "active" : ""} />)}</div><p>Новосибирск · гастробар «Коробок»</p></footer>
     </main>
   );
 }
